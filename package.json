@@ -1,0 +1,21 @@
+{
+	"name": "kettle",
+	"version": "0.0.1",
+	"description": "An open source digital audio workstation built on web technologies",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron ."
+	},
+	"repository": "",
+	"keywords": [
+		"Kettle",
+		"audio",
+		"music",
+		"production"
+	],
+	"author": "Sam from Cadott",
+	"license": "CC0-1.0",
+	"devDependencies": {
+		"electron": "^1.4.1"
+	}
+}
