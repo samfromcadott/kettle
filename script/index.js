@@ -5,6 +5,7 @@ const {remote} = electron
 const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 const main = remote.require('./main')
+const Tone = require('Tone')
 const audio = require('./audio-engine')
 
 console.log("Node.js version: ", process.versions.node)
@@ -23,3 +24,6 @@ $( "#metronome-checkbox" ).change(function () {
 		audio.metronome.changeMode('off')
 	}
 })
+
+testTrack = new audio.Track('Test', 'midi')
+testTrack.addSource(new Tone.Synth)

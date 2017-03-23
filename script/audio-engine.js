@@ -1,5 +1,30 @@
 const Tone = require('Tone')
 
+exports.Track = function (name, type) {
+	this.name = name
+	this.type = type
+
+	this.audioEffects = []
+	this.panVol = new Tone.PanVol()
+
+	this.addSource = function (source) {
+		this.source = source
+		this.updateChain()
+	}
+
+	this.updateChain = function () {
+		this.source.chain(this.panVol, Tone.Master)
+	}
+
+	// if (type == 'audio') {
+	//
+	// }
+	//
+	// if (type == 'midi') {
+	//
+	// }
+}
+
 exports.metronome = {
 	mode: "off", //This can be 'on', 'off', or 'countdown'
 	synth: new Tone.Synth().toMaster(),
