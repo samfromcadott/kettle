@@ -5,6 +5,7 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
 const {ipcMain} = require('electron')
+const {dialog} = require('electron')
 
 const path = require('path')
 const url = require('url')
@@ -73,5 +74,15 @@ ipcMain.on('window-manager', (event, arg) => {
 
 	if (arg == "New Window") { //Create new window
 		createWindow()
+	}
+})
+
+ipcMain.on('file-manager', (event, arg) => {
+	console.log(arg)
+
+	if (arg == "Import Files") {
+		dialog.showOpenDialog({properties: ['openFile', 'multiSelections']}, (filePaths) => {
+			console.log(filePaths)
+		})
 	}
 })

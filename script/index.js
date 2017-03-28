@@ -16,6 +16,10 @@ $('#play').click(function() {
 	audio.play()
 })
 
+$('#import').click(function() {
+	ipcRenderer.send('file-manager', 'Import Files')
+})
+
 $( "#metronome-checkbox" ).change(function () {
 	if (this.checked) {
 		audio.metronome.changeMode('on')
@@ -30,3 +34,4 @@ testTrack.addSource(new Tone.Synth)
 testTrack.part.add( '1m', {notes: [ ['0:1', 'C3'], ['0:2', 'D3'] ]} )
 
 var audioTrack = new audio.Track('Test', 'audio')
+// audioTrack.part.add( {time: '1m', buffer: '', start: 0, length: '2m'} )
