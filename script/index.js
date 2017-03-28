@@ -25,5 +25,8 @@ $( "#metronome-checkbox" ).change(function () {
 	}
 })
 
-testTrack = new audio.Track('Test', 'midi')
+var testTrack = new audio.Track('Test', 'midi')
 testTrack.addSource(new Tone.Synth)
+testTrack.part.add( '1m', {notes: [ ['0:1', 'C3'], ['0:2', 'D3'] ]} )
+
+var audioTrack = new audio.Track('Test', 'audio')
