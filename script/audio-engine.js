@@ -1,6 +1,6 @@
 const Tone = require('Tone')
 
-var audioSamples = new Tone.Buffers({})
+exports.audioSamples = new Tone.Buffers({})
 
 exports.Track = function (name, type) {
 	this.name = name
@@ -19,7 +19,7 @@ exports.Track = function (name, type) {
 		this.updateChain()
 
 		this.part = new Tone.Part(function (time, value) {
-			this.parent.source.buffer = audioSamples.get(value.buffer)
+			this.parent.source.buffer = exports.audioSamples.get(value.buffer)
 
 			if (value.loop == true) { //Things to do for looping audio clips
 				this.parent.source.loop = true

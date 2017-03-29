@@ -83,6 +83,7 @@ ipcMain.on('file-manager', (event, arg) => {
 	if (arg == "Import Files") {
 		dialog.showOpenDialog({properties: ['openFile', 'multiSelections']}, (filePaths) => {
 			console.log(filePaths)
+			event.sender.send('importer', filePaths)
 		})
 	}
 })
