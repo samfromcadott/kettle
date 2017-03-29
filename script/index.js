@@ -27,8 +27,16 @@ ipcRenderer.on('importer', (event, arg) => {
 
 //UI
 
-$('#play').click(function() {
+$('#play').click( () => {
 	audio.play()
+})
+
+$('#stop').click( () => {
+	audio.stop()
+})
+
+$('#pause').click( () => {
+	audio.pause()
 })
 
 $('#import').click( () => {

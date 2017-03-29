@@ -87,4 +87,17 @@ exports.metronome = {
 exports.play = function () {
 	console.log('Transport Started');
 	Tone.Transport.start()
+	Tone.Master.mute = false
+}
+
+exports.stop = function () {
+	console.log('Transport Stoped');
+	Tone.Transport.stop()
+	Tone.Master.mute = true
+}
+
+exports.pause = function () {
+	console.log('Transport Paused');
+	Tone.Transport.pause()
+	Tone.Master.mute = true
 }
