@@ -14,14 +14,20 @@ console.log("Electron version: ", process.versions.electron)
 
 var fileArray = [] //This is a list of all files recorded or imported
 
+function getFileName(filepath) {
+	filepath = filepath.replace(/\\/g,"\/") //Convert Windows paths to UNIX
+	filepath = filepath.split('\/') //Split directoies
+	return filepath[filepath.length - 1]
+}
+
 //IPC Functions
 
 ipcRenderer.on('importer', (event, arg) => {
 	fileArray = fileArray.concat(arg)
 
 	for (var i = 0; i < arg.length; i++) {
-		audio.audioSamples.add(arg[i], arg[i]) //Adds the samples to the buffer
-		$('#file-list').append('<li><a>'+arg[i]+'</a></li>')
+		audio.audioSamples.add(getFileName(arg[i]), arg[i]) //Adds samples to buffer
+		$('#file-list').append('<li><a>'+getFileName(arg[i])+'</a></li>')
 	}
 })
 
@@ -55,7 +61,7 @@ $( "#metronome-checkbox" ).change(function () {
 $('#update-program').click( () => {
 	var clip = {}
 	clip.time = $('#time').val() + 'm'
-	clip.buffer = fileArray[ parseInt( $('#sample').val(), 10 ) ]
+	clip.buffer = getFileName(fileArray[ parseInt( $('#sample').val(), 10 ) ])
 	clip.start = $('#start').val() + 'm'
 	clip.length = $('#length').val() + 'm'
 	audioTrack.part.add( clip )
@@ -64,8 +70,13 @@ $('#update-program').click( () => {
 //Testing
 
 var testTrack = new audio.Track('Test', 'midi')
-testTrack.addSource(new Tone.Synth)
-testTrack.part.add( '1m', {notes: [ ['0:1', 'C3'], ['0:2', 'D3'] ]} )
+testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
+// testTrack.part.add( {
+// 	time:0,
+// 	offset:0,
+// 	length:'1m',
+// 	clip: new Tone.Part(function (time, value) {
+// 		console.log(value)
+// 	},[{time: 0, note: 'C3', length: '4n'},{time: '0:1', note: 'D3', length: '4n'}])} )
 
 var audioTrack = new audio.Track('Test', 'audio')
-// audioTrack.part.add( {time: '1m', buffer: '', start: 0, length: '2m'} )
