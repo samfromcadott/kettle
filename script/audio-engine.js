@@ -29,6 +29,8 @@ exports.Track = function (name, type) {
 
 			this.parent.source.start(time, value.start, value.length)
 		}, []).start(0)
+
+		this.part.parent = this //This is so callback can access the Track object
 	}
 
 	if (type == 'midi') {
@@ -40,19 +42,31 @@ exports.Track = function (name, type) {
 			this.updateChain()
 		}
 
-		this.part = new Tone.Part(function(time, value) {
-			new Tone.Part(function (time, value) {
-				//this.wrapper.play(time, value)
-				// this.source.triggerAttackRelease(value.note, value.length, time)
-				console.log(value)
-			}, value.notes).start(time)
-		}, []).start(0)
+		this.addClip = function (clip, start, offset, length) {
+			var source = this.source
+
+			var newClip = new Tone.Part(function (time, value) {
+				source.triggerAttackRelease(value.note, value.length, time)
+			}, clip.notes).start(start, offset)
+
+			if (clip.loop) {
+				newClip.loop = true
+				newClip.loopStart = clip.loopStart
+				newClip.loopEnd = clip.loopEnd
+			}
+
+			newClip.stop(Tone.Time(start).add(length))
+		}
+
+		// this.part = new Tone.Part(function (time, value) {
+		// 	//this.parent.wrapper.play(time, value)
+		// 	// this.parent.source.triggerAttackRelease(value.note, value.length, time)
+		// 	value.clip.currentTrack = this.parent
+		// 	value.clip.start(time, value.offset)
+		// 	value.clip.stop(value.length)
+		// }, []).start(0)
 	}
-
-	this.part.parent = this //This is so callback can access the Track object
 }
-
-// IDEA: There can be an 'instrument rapper' class that does the note number to frequency work and can manage multi-node and multi-source instruments
 
 exports.metronome = {
 	mode: "off", //This can be 'on', 'off', or 'countdown'

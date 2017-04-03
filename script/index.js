@@ -69,14 +69,24 @@ $('#update-program').click( () => {
 
 //Testing
 
+var testClip = {
+	name: "Test Clip",
+	loop: true,
+	loopStart: '0:0',
+	loopEnd: '2:0',
+	notes: [
+		{time: '0:0', note: 'C3', length: '4n'},
+		{time: '0:1', note: 'D3', length: '4n'},
+		{time: '0:2', note: 'E3', length: '4n'},
+		{time: '0:3', note: 'F3', length: '4n'},
+		{time: '1:0', note: 'G3', length: '4n'},
+		{time: '1:1', note: 'A3', length: '4n'},
+		{time: '1:2', note: 'B3', length: '4n'},
+		{time: '1:3', note: 'C4', length: '4n'}]
+}
+
 var testTrack = new audio.Track('Test', 'midi')
 testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
-// testTrack.part.add( {
-// 	time:0,
-// 	offset:0,
-// 	length:'1m',
-// 	clip: new Tone.Part(function (time, value) {
-// 		console.log(value)
-// 	},[{time: 0, note: 'C3', length: '4n'},{time: '0:1', note: 'D3', length: '4n'}])} )
+testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '3:0'/*Length*/)
 
 var audioTrack = new audio.Track('Test', 'audio')
