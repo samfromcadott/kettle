@@ -7,11 +7,14 @@ exports.Track = function (name, type) {
 	this.type = type
 
 	this.audioEffects = []
-	this.panVol = new Tone.PanVol()
+	this.pan = new Tone.Panner()
+	this.volume = new Tone.Volume()
+	// this.panVol = new Tone.PanVol()
 	this.timeline = [] //This is the events (clips and programing) of the track
 
 	this.updateChain = function () {
-		this.source.chain(this.panVol, Tone.Master)
+		console.log(this.source)
+		this.source.chain(this.pan, this.volume, Tone.Master)
 	}
 
 	if (type == 'audio') {

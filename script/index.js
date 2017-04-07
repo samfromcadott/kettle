@@ -67,6 +67,14 @@ $('#update-program').click( () => {
 	audioTrack.part.add( clip )
 })
 
+$('#volume-control').on('input', function () {
+	audioTrack.volume.set( 'volume', Math.log( $(this).val() )*36 )
+})
+
+$('#pan-control').on('input', function () {
+	audioTrack.pan.set( 'pan', $(this).val() )
+})
+
 //Testing
 
 var testClip = {
@@ -87,6 +95,6 @@ var testClip = {
 
 var testTrack = new audio.Track('Test', 'midi')
 testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
-testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '3:0'/*Length*/)
+// testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '3:0'/*Length*/)
 
 var audioTrack = new audio.Track('Test', 'audio')
