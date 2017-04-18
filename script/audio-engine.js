@@ -13,8 +13,16 @@ exports.Track = function (name, type) {
 	this.timeline = [] //This is the events (clips and programing) of the track
 
 	this.updateChain = function () {
-		console.log(this.source)
-		this.source.chain(this.pan, this.volume, Tone.Master)
+		if (this.audioEffects.length >= 1) {
+			this.source.connect(this.audioEffects[0])
+			for (var i = 0; i < this.audioEffects.length - 1; i++) {
+				this.audioEffects[i].connect(this.audioEffects[i + 1])
+			}
+			this.audioEffects[this.audioEffects.length - 1].chain(this.pan, this.volume, Tone.Master)
+		}
+		else {
+			this.source.chain(this.pan, this.volume, Tone.Master)
+		}
 	}
 
 	if (type == 'audio') {

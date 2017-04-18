@@ -7,6 +7,8 @@ const {ipcRenderer} = require('electron')
 const main = remote.require('./main')
 const Tone = require('Tone')
 const audio = require('./audio-engine')
+const fs = require('fs')
+const path = require('path')
 
 console.log("Node.js version: ", process.versions.node)
 console.log("Chromium version: ", process.versions.chrome)
@@ -58,43 +60,41 @@ $( "#metronome-checkbox" ).change(function () {
 	}
 })
 
-$('#update-program').click( () => {
-	var clip = {}
-	clip.time = $('#time').val() + 'm'
-	clip.buffer = getFileName(fileArray[ parseInt( $('#sample').val(), 10 ) ])
-	clip.start = $('#start').val() + 'm'
-	clip.length = $('#length').val() + 'm'
-	audioTrack.part.add( clip )
-})
-
-$('#volume-control').on('input', function () {
-	audioTrack.volume.set( 'volume', Math.log( $(this).val() )*36 )
-})
-
-$('#pan-control').on('input', function () {
-	audioTrack.pan.set( 'pan', $(this).val() )
+$('#editor').load('./song-editor.html')
+fs.readFile(path.join(__dirname, 'song-editor.js'), 'utf-8', function (err, data) {
+	if (!err) {
+		eval(data)
+	} else {
+		console.log(err)
+	}
 })
 
 //Testing
 
+function noteToFreq(note) {
+	return 2**((note-69)/12) * 440
+}
+
 var testClip = {
 	name: "Test Clip",
-	loop: true,
-	loopStart: '0:0',
-	loopEnd: '2:0',
+	// loop: true,
+	// loopStart: '0:0',
+	// loopEnd: '2:0',
 	notes: [
-		{time: '0:0', note: 'C3', length: '4n'},
-		{time: '0:1', note: 'D3', length: '4n'},
-		{time: '0:2', note: 'E3', length: '4n'},
-		{time: '0:3', note: 'F3', length: '4n'},
-		{time: '1:0', note: 'G3', length: '4n'},
-		{time: '1:1', note: 'A3', length: '4n'},
-		{time: '1:2', note: 'B3', length: '4n'},
-		{time: '1:3', note: 'C4', length: '4n'}]
+		{time: '0:0', note: noteToFreq(48), length: '4n'},
+		{time: '0:1', note: noteToFreq(50), length: '4n'},
+		{time: '0:2', note: noteToFreq(52), length: '4n'},
+		{time: '0:3', note: noteToFreq(53), length: '4n'},
+		{time: '1:0', note: noteToFreq(55), length: '4n'},
+		{time: '1:1', note: noteToFreq(57), length: '4n'},
+		{time: '1:2', note: noteToFreq(59), length: '4n'},
+		{time: '1:3', note: noteToFreq(60), length: '4n'}]
 }
+
+var x = 50
 
 var testTrack = new audio.Track('Test', 'midi')
 testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
-// testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '3:0'/*Length*/)
+// testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '2:0'/*Length*/)
 
 var audioTrack = new audio.Track('Test', 'audio')
