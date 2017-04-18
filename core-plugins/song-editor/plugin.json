@@ -1,0 +1,6 @@
+{
+	"name": "Song Editor",
+	"type": "window",
+	"htmlFile": "song-editor.html",
+	"javaScriptFile": "song-editor.js"
+}
