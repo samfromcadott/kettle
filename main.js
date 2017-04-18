@@ -9,7 +9,7 @@ const {dialog} = require('electron')
 
 const path = require('path')
 const url = require('url')
-
+const fs = require('fs')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -61,13 +61,6 @@ app.on('window-all-closed', function () {
 // 		createWindow()
 // 	}
 // })
-
-exports.testString = "Requiring main process corectly"
-
-exports.domainTest = function () {
-	//Testing to see where console.log ends up.
-	console.log("domainTest() was run")
-}
 
 ipcMain.on('window-manager', (event, arg) => {
 	console.log(arg)

@@ -19,7 +19,29 @@ var fileArray = [] //This is a list of all files recorded or imported
 function getFileName(filepath) {
 	filepath = filepath.replace(/\\/g,"\/") //Convert Windows paths to UNIX
 	filepath = filepath.split('\/') //Split directoies
-	return filepath[filepath.length - 1]
+	return filepath[filepath.length - 1] //Return test after last slash
+}
+
+function loadUIPlugin(pluginName) {
+	var targetDiv = $('<div/>') //Create the div for the plugin
+	var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
+
+	//Get the 'plugin.json' file
+	var pluginInfo = JSON.parse( fs.readFileSync(path.join(pluginPath, 'plugin.json'), 'utf-8') )
+
+	//Load plugin HTML
+	$(targetDiv).load(path.join(pluginPath, pluginInfo.htmlFile))
+
+	$(targetDiv).appendTo('body') //Add the plugin div to the window
+
+	//Run the plugin script
+	fs.readFile(path.join(pluginPath, pluginInfo.javaScriptFile), 'utf-8', function (err, data) {
+		if (!err) {
+			eval(data)
+		} else {
+			console.log(err)
+		}
+	})
 }
 
 //IPC Functions
@@ -60,15 +82,6 @@ $( "#metronome-checkbox" ).change(function () {
 	}
 })
 
-$('#editor').load('./song-editor.html')
-fs.readFile(path.join(__dirname, 'song-editor.js'), 'utf-8', function (err, data) {
-	if (!err) {
-		eval(data)
-	} else {
-		console.log(err)
-	}
-})
-
 //Testing
 
 function noteToFreq(note) {
@@ -91,10 +104,10 @@ var testClip = {
 		{time: '1:3', note: noteToFreq(60), length: '4n'}]
 }
 
-var x = 50
-
 var testTrack = new audio.Track('Test', 'midi')
 testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 // testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '2:0'/*Length*/)
 
 var audioTrack = new audio.Track('Test', 'audio')
+
+loadUIPlugin('song-editor')
