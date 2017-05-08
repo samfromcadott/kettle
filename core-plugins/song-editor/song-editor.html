@@ -1,8 +1,37 @@
-<h3>Programing</h3>
+<!-- <h3>Programing</h3>
 <ul>
-	<li><input type="number" id="sample" value="0"></li>
-	<li><input type="number" id="time" value="0"></li>
-	<li><input type="number" id="start" value="0"></li>
-	<li><input type="number" id="length" value="0"></li>
+<li><input type="number" id="sample" value="0"></li>
+<li><input type="number" id="time" value="0"></li>
+<li><input type="number" id="start" value="0"></li>
+<li><input type="number" id="length" value="0"></li>
 </ul>
-<button id="update-program">Update</button>
+<button id="update-program">Update</button> -->
+
+<div class="song-editor container">
+	<div class="song-editor header">
+		<button id="play">Play</button>
+		<button id="pause">Pause</button>
+		<button id="stop">Stop</button>
+		<input type="checkbox" id="metronome-checkbox">
+		<label for="metronome-checkbox">Metronome</label>
+	</div>
+	<div class="song-editor body">
+		<table id="song-editor-track-table">
+			<tr>
+				<th>
+					<h4>Track 1</h4>
+					<p>
+						<input id="volume-control" type="range"  min="0" max="1.2" value="1" step="0.002"/>
+						<label for="volume-control">Volume</label>
+					</p>
+					<p>
+						<input id="pan-control" type="range" min="-1" max="1" value="0" step="0.001"/>
+						<label for="pan-control">Pan</label>
+					</p>
+				</th>
+				<td>This is where the clips will go</td>
+			</tr>
+		</table>
+		<!-- <button id="new-track">New Audio Track</button> -->
+	</div>
+</div>
