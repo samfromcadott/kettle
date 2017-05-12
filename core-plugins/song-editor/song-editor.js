@@ -9,6 +9,7 @@ $('#stop').click( () => {
 $('#pause').click( () => {
 	audio.pause()
 })
+
 $( "#metronome-checkbox" ).change(function () {
 	if (this.checked) {
 		audio.metronome.changeMode('on')
@@ -33,6 +34,12 @@ $('#update-program').click( function () {
 	clip.start = $('#start').val() + 'm'
 	clip.length = $('#length').val() + 'm'
 	audioTrack.part.add( clip )
+})
+
+$('.song-editor.body').scroll(function(){
+	$('.song-editor.track-control').css({
+		'left': $(this).scrollLeft()
+	})
 })
 
 // $('#new-track').click( function () {
