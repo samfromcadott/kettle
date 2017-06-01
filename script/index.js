@@ -1,5 +1,7 @@
 //Renderer process for main window
-var $ = require('jQuery')
+window.$ = window.jQuery = require('jquery')
+require('../node_modules/jquery-ui-dist/jquery-ui.js')
+
 const electron = require('electron')
 const {remote} = electron
 const {Menu}  = remote.require('electron')
@@ -57,29 +59,10 @@ ipcRenderer.on('importer', (event, arg) => {
 
 //UI
 
-$('#play').click( () => {
-	audio.play()
-})
-
-$('#stop').click( () => {
-	audio.stop()
-})
-
-$('#pause').click( () => {
-	audio.pause()
-})
+loadUIPlugin('song-editor')
 
 $('#import').click( () => {
 	ipcRenderer.send('file-manager', 'Import Files')
-})
-
-$( "#metronome-checkbox" ).change(function () {
-	if (this.checked) {
-		audio.metronome.changeMode('on')
-	}
-	else {
-		audio.metronome.changeMode('off')
-	}
 })
 
 //Testing
@@ -109,5 +92,3 @@ testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 // testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '2:0'/*Length*/)
 
 var audioTrack = new audio.Track('Test', 'audio')
-
-loadUIPlugin('song-editor')

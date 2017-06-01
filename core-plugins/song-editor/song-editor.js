@@ -42,6 +42,10 @@ $('.song-editor.body').scroll(function(){
 	})
 })
 
+$('.song-editor.body').sortable({
+	handle: ".song-editor.track-title"
+})
+
 // $('#new-track').click( function () {
 //
 // })
