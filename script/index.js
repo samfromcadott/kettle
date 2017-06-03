@@ -65,6 +65,34 @@ $('#import').click( () => {
 	ipcRenderer.send('file-manager', 'Import Files')
 })
 
+function displayMessage(type, head, body) {
+	var newMessage = $('<div/>', { //Message window
+		class: 'message-box ' + type
+	})
+
+	var messageHead = $('<div/>', { //Message title bar
+		class: 'message-head',
+		html: head,
+		appendTo: newMessage //Add to window
+	})
+
+	var messageBody = $('<div/>', { //Message content
+		class: 'message-body',
+		html: body,
+		appendTo: newMessage //Add to window
+	})
+
+	var closeButton = $('<button/>', { //Close button
+		class: 'message-close',
+		html: '&times;',
+		appendTo: messageHead, //Add to title bar
+		click: () => {newMessage.remove()}
+	})
+
+	newMessage.prependTo('#message-area') //Add to start of message area
+	setTimeout(() => {newMessage.remove()}, 20000) //Remove after 20 seconds
+}
+
 //Testing
 
 function noteToFreq(note) {
@@ -92,3 +120,5 @@ testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 // testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '2:0'/*Length*/)
 
 var audioTrack = new audio.Track('Test', 'audio')
+
+// displayMessage('warning', 'Test', 'Testing... Testing... 1, 2, 3...')
