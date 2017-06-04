@@ -82,7 +82,7 @@ function displayMessage(type, head, body) {
 		appendTo: newMessage //Add to window
 	})
 
-	var closeButton = $('<button/>', { //Close button
+	var closeButton = $('<div/>', { //Close button
 		class: 'message-close',
 		html: '&times;',
 		appendTo: messageHead, //Add to title bar
@@ -121,4 +121,7 @@ testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 
 var audioTrack = new audio.Track('Test', 'audio')
 
-// displayMessage('warning', 'Test', 'Testing... Testing... 1, 2, 3...')
+// displayMessage('info', 'Test', 'Testing... Testing... 1, 2, 3...')
+// displayMessage('success', 'Alerts Working', 'User messages work.')
+// displayMessage('warning', 'Alert', 'Something might be going wrong.')
+// displayMessage('error', 'Error', 'Something probably went wrong.')

@@ -1,0 +1,75 @@
+body {
+	padding: 0;
+	margin: 0;
+	user-select: none;
+	cursor: default;
+}
+
+// User messages
+@error-bg: #ff3b3b;
+@warning-bg: #ffe928;
+@success-bg: #4de22e;
+@info-bg: #3da2ff;
+
+@error-bg-light: lighten(@error-bg, 30%);
+@warning-bg-light: lighten(@warning-bg, 30%);
+@success-bg-light: lighten(@success-bg, 30%);
+@info-bg-light: lighten(@info-bg, 30%);
+
+
+#message-area {
+	position: fixed;
+	overflow: hidden;
+	max-width: 50em;
+	z-index: 1000; //Make sure this is always on top
+}
+
+#message-area > div.message-box {
+	margin: 1em;
+	overflow: hidden;
+	border-radius: 0.3em;
+}
+
+
+.message-head {
+	padding: 0.4em;
+	padding-top: 0.3em;
+	width: 100%;
+	div.message-box.error & { background-color: @error-bg; }
+	div.message-box.warning & { background-color: @warning-bg; }
+	div.message-box.success & { background-color: @success-bg; }
+	div.message-box.info & { background-color: @info-bg; }
+}
+
+.message-body {
+	padding: 0.3em;
+	div.message-box.error & { background-color: @error-bg-light; }
+	div.message-box.warning & { background-color: @warning-bg-light; }
+	div.message-box.success & { background-color: @success-bg-light; }
+	div.message-box.info & { background-color: @info-bg-light; }
+}
+
+.message-close {
+	font-size: 1.2em;
+	font-weight: bold;
+	border-radius: 0.2em;
+	float: right;
+	padding: 0 0.3em 0 0.3em;
+	margin-right: 0.6em;
+	div.message-box.error & {
+		color: @error-bg-light;
+		&:hover { color: @error-bg; background-color: @error-bg-light; }
+	}
+	div.message-box.warning & {
+		color: @warning-bg-light;
+		&:hover { color: @warning-bg; background-color: @warning-bg-light; }
+	}
+	div.message-box.success & {
+		color: @success-bg-light;
+		&:hover { color: @success-bg; background-color: @success-bg-light; }
+	}
+	div.message-box.info & {
+		color: @info-bg-light;
+		&:hover { color: @info-bg; background-color: @info-bg-light; }
+	}
+}
