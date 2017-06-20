@@ -1,18 +1,18 @@
 const electron = require('electron')
-// Module to control application life.
+
 const app = electron.app
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
 const {ipcMain} = require('electron')
 const {dialog} = require('electron')
+const {Menu} = require('electron')
 
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+//Window Creation
+
 var windowArray = []
 exports.windowCount = 0
 
@@ -33,22 +33,13 @@ function createWindow () {
 
 	// Emitted when the window is closed.
 	newWindow.on('closed', function () {
-		// Dereference the window object, usually you would store windows
-		// in an array if your app supports multi windows, this is the time
-		// when you should delete the corresponding element.
 		newWindow = null
 	})
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
 app.on('window-all-closed', function () {
-	// On OS X it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
 	if (process.platform !== 'darwin') {
 		app.quit()
 	}
@@ -62,6 +53,59 @@ app.on('window-all-closed', function () {
 // 	}
 // })
 
+//Menus
+
+var template = [
+	{
+		label: 'File',
+		submenu: [
+			{label: 'New Project'},
+			{label: 'Open Project'},
+			{label: 'Import File'},
+			{type: 'separator'},
+			{label: 'Save'},
+			{label: 'Save As'},
+			{label: 'Settings'}
+		]
+	},
+	{
+		label: 'Edit',
+		submenu: [
+			{role: 'undo'},
+			{role: 'redo'},
+			{type: 'separator'},
+			{role: 'cut'},
+			{role: 'copy'},
+			{role: 'paste'},
+			{role: 'delete'},
+			{role: 'selectall'}
+		]
+	},
+	{
+		label: 'Window',
+		submenu: [
+			{label: 'New Window', click: createWindow},
+			{role: 'minimize'},
+			{type: 'separator'},
+			{role: 'close'}
+		]
+	},
+]
+
+var mainMenu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(mainMenu)
+
+//File Functions
+
+function importFile (event) {
+	dialog.showOpenDialog({properties: ['openFile', 'multiSelections']}, (filePaths) => {
+		console.log(filePaths)
+		event.sender.send('importer', filePaths)
+	})
+}
+
+//IPC Functions
+
 ipcMain.on('window-manager', (event, arg) => {
 	console.log(arg)
 
@@ -74,9 +118,6 @@ ipcMain.on('file-manager', (event, arg) => {
 	console.log(arg)
 
 	if (arg == "Import Files") {
-		dialog.showOpenDialog({properties: ['openFile', 'multiSelections']}, (filePaths) => {
-			console.log(filePaths)
-			event.sender.send('importer', filePaths)
-		})
+		importFile(event)
 	}
 })
