@@ -25,16 +25,27 @@ function getFileName(filepath) {
 }
 
 function loadUIPlugin(pluginName) {
-	var targetDiv = $('<div/>') //Create the div for the plugin
 	var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
 
 	//Get the 'plugin.json' file
 	var pluginInfo = JSON.parse( fs.readFileSync(path.join(pluginPath, 'plugin.json'), 'utf-8') )
 
-	//Load plugin HTML
-	$(targetDiv).load(path.join(pluginPath, pluginInfo.htmlFile))
+	var htmlFile = path.join(pluginPath, pluginInfo.htmlFile)
 
-	$(targetDiv).appendTo('body') //Add the plugin div to the window
+	var newDiv = $('<div/>', { //Create the div for the plugin
+		class: 'subwindow',
+		load: htmlFile, //Load plugin HTML
+		appendTo: '#window-body' //Add the plugin div to the window
+	})
+
+	$(newDiv).resizable({
+		containment: "parent"
+	})
+	$(newDiv).draggable({
+		handle: ".header",
+		containment: "parent"
+	})
+	$(newDiv).css({width: '50em'})
 
 	//Run the plugin script
 	fs.readFile(path.join(pluginPath, pluginInfo.javaScriptFile), 'utf-8', function (err, data) {
@@ -112,7 +123,8 @@ var testClip = {
 		{time: '1:0', note: noteToFreq(55), length: '4n'},
 		{time: '1:1', note: noteToFreq(57), length: '4n'},
 		{time: '1:2', note: noteToFreq(59), length: '4n'},
-		{time: '1:3', note: noteToFreq(60), length: '4n'}]
+		{time: '1:3', note: noteToFreq(60), length: '4n'}
+	]
 }
 
 var testTrack = new audio.Track('Test', 'midi')
@@ -121,7 +133,7 @@ testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 
 var audioTrack = new audio.Track('Test', 'audio')
 
-// displayMessage('info', 'Test', 'Testing... Testing... 1, 2, 3...')
-// displayMessage('success', 'Alerts Working', 'User messages work.')
-// displayMessage('warning', 'Alert', 'Something might be going wrong.')
-// displayMessage('error', 'Error', 'Something probably went wrong.')
+displayMessage('info', 'Test', 'Testing... Testing... 1, 2, 3...')
+displayMessage('success', 'Alerts Working', 'User messages work.')
+displayMessage('warning', 'Alert', 'Something might be going wrong.')
+displayMessage('error', 'Error', 'Something probably went wrong.')
