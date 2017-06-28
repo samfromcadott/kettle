@@ -16,6 +16,7 @@ console.log("Node.js version: ", process.versions.node)
 console.log("Chromium version: ", process.versions.chrome)
 console.log("Electron version: ", process.versions.electron)
 
+var currentProject //The object containing all current project information
 var fileArray = [] //This is a list of all files recorded or imported
 
 function getFileName(filepath) {
@@ -53,6 +54,16 @@ function loadUIPlugin(pluginName) {
 			eval(data)
 		} else {
 			console.log(err)
+		}
+	})
+}
+
+function loadProject(filepath) {
+	fs.readFile(filepath, 'utf-8', function (err, data) {
+		if (!err) {
+			currentProject = audio.readProject( JSON.parse(data) )
+		} else {
+			displayMessage('error', 'Cannot Load Project', 'Could not open file:' + filepath)
 		}
 	})
 }
@@ -133,7 +144,10 @@ testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 
 var audioTrack = new audio.Track('Test', 'audio')
 
-displayMessage('info', 'Test', 'Testing... Testing... 1, 2, 3...')
-displayMessage('success', 'Alerts Working', 'User messages work.')
-displayMessage('warning', 'Alert', 'Something might be going wrong.')
-displayMessage('error', 'Error', 'Something probably went wrong.')
+// displayMessage('info', 'Test', 'Testing... Testing... 1, 2, 3...')
+// displayMessage('success', 'Alerts Working', 'User messages work.')
+// displayMessage('warning', 'Alert', 'Something might be going wrong.')
+// displayMessage('error', 'Error', 'Something probably went wrong.')
+
+loadProject('./example-project.json')
+console.log(currentProject)

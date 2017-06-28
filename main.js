@@ -87,6 +87,7 @@ var template = [
 			{label: 'New Window', click: createWindow},
 			{role: 'minimize'},
 			{type: 'separator'},
+			{role: 'toggledevtools'},
 			{role: 'close'}
 		]
 	},

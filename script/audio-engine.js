@@ -109,6 +109,30 @@ exports.metronome = {
 	}
 }
 
+exports.readProject = function (projectJSON) {
+	console.log(projectJSON)
+	console.log(projectJSON.tracks)
+
+	var loadedProject = {}
+	loadedProject.tracks = []
+
+	exports.audioSamples = new Tone.Buffers(projectJSON.buffers) //Add audio samples
+
+	for (var i = 0; i < projectJSON.tracks.length; i++) { //Add each track
+		var currentTrack = projectJSON.tracks[i]
+
+		loadedProject.tracks[i] = new exports.Track(currentTrack.name, currentTrack.type)
+		loadedProject.tracks[i].timeline = currentTrack.timeline
+
+		for (var j = 0; j < currentTrack.timeline.length; j++) {
+			loadedProject.tracks[i].part.add(currentTrack.timeline[j])
+		}
+	}
+
+	console.log(loadedProject)
+	return loadedProject
+}
+
 exports.play = function () {
 	console.log('Transport Started');
 	Tone.Transport.start()
