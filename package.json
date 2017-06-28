@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "electron ."
 	},
-	"repository": "",
+	"repository": "https://github.com/samfromcadott/kettle.git",
 	"keywords": [
 		"Kettle",
 		"audio",
