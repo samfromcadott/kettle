@@ -101,7 +101,4 @@ var testClip = {
 // displayMessage('warning', 'Alert', 'Something might be going wrong.')
 // displayMessage('error', 'Error', 'Something probably went wrong.')
 
-// loadProject('./example-project.json')
-// console.log(currentProject)
-
-audio.addTrack('Test', 'audio')
+loadProject('./example-project.json')

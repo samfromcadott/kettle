@@ -16,7 +16,7 @@ function Track(name, type) {
 }
 
 function AudioTrack (name, type) {
-	Track.call(this, name, type)
+	Track.call(this, name, type) //Inherit from Track()
 	this.source = new Tone.Player()
 
 	this.playClip = function (clip) {
@@ -34,7 +34,7 @@ function AudioTrack (name, type) {
 }
 
 function MidiTrack (name, type) {
-	Track.call(this, name, type)
+	Track.call(this, name, type) //Inherit from Track()
 
 	this.addSource = function (source) {
 		this.source = source
@@ -57,84 +57,6 @@ function addTrack (name, type) {
 }
 
 exports.addTrack = addTrack
-
-// exports.Track = function (name, type) {
-// 	this.name = name
-// 	this.type = type
-//
-// 	this.audioEffects = []
-// 	this.pan = new Tone.Panner()
-// 	this.volume = new Tone.Volume()
-// 	this.timeline = [] //This is the events (clips and programing) of the track
-//
-// 	this.updateChain = function () {
-// 		if (this.audioEffects.length >= 1) {
-// 			this.source.connect(this.audioEffects[0])
-// 			for (var i = 0; i < this.audioEffects.length - 1; i++) {
-// 				this.audioEffects[i].connect(this.audioEffects[i + 1])
-// 			}
-// 			this.audioEffects[this.audioEffects.length - 1].chain(this.pan, this.volume, Tone.Master)
-// 		}
-// 		else {
-// 			this.source.chain(this.pan, this.volume, Tone.Master)
-// 		}
-// 	}
-//
-// 	if (type == 'audio') {
-// 		this.source = new Tone.Player()
-// 		this.updateChain()
-//
-// 		this.part = new Tone.Part(function (time, value) {
-// 			this.parent.source.buffer = exports.audioSamples.get(value.buffer)
-// 			this.parent.source.retrigger = true
-//
-// 			if (value.loop == true) { //Things to do for looping audio clips
-// 				this.parent.source.loop = true
-// 				this.parent.source.loopStart = value.loopStart
-// 				this.parent.source.loopEnd = value.loopEnd
-// 				this.parent.source.stop(value.length)
-// 			}
-//
-// 			this.parent.source.start(time, value.start, value.length)
-// 		}, []).start(0)
-//
-// 		this.part.parent = this //This is so callback can access the Track object
-// 	}
-//
-// 	if (type == 'midi') {
-// 		this.midiEffects = []
-// 		// this.wrapper = This will be where the wrapper goes
-//
-// 		this.addSource = function (source) {
-// 			this.source = source
-// 			this.updateChain()
-// 		}
-//
-// 		this.addClip = function (clip, start, offset, length) {
-// 			var source = this.source
-//
-// 			var newClip = new Tone.Part(function (time, value) {
-// 				source.triggerAttackRelease(value.note, value.length, time)
-// 			}, clip.notes).start(start, offset)
-//
-// 			if (clip.loop) {
-// 				newClip.loop = true
-// 				newClip.loopStart = clip.loopStart
-// 				newClip.loopEnd = clip.loopEnd
-// 			}
-//
-// 			newClip.stop(Tone.Time(start).add(length))
-// 		}
-//
-// 		// this.part = new Tone.Part(function (time, value) {
-// 		// 	//this.parent.wrapper.play(time, value)
-// 		// 	// this.parent.source.triggerAttackRelease(value.note, value.length, time)
-// 		// 	value.clip.currentTrack = this.parent
-// 		// 	value.clip.start(time, value.offset)
-// 		// 	value.clip.stop(value.length)
-// 		// }, []).start(0)
-// 	}
-// }
 
 exports.metronome = {
 	mode: "off", //This can be 'on', 'off', or 'countdown'
@@ -167,9 +89,6 @@ exports.metronome = {
 }
 
 exports.readProject = function (projectJSON) {
-	console.log(projectJSON)
-	console.log(projectJSON.tracks)
-
 	var loadedProject = {}
 	loadedProject.tracks = []
 
@@ -178,11 +97,10 @@ exports.readProject = function (projectJSON) {
 	for (var i = 0; i < projectJSON.tracks.length; i++) { //Add each track
 		var currentTrack = projectJSON.tracks[i]
 
-		loadedProject.tracks[i] = new exports.Track(currentTrack.name, currentTrack.type)
-		loadedProject.tracks[i].timeline = currentTrack.timeline
+		loadedProject.tracks[i] = addTrack(currentTrack.name, currentTrack.type)
 
 		for (var j = 0; j < currentTrack.timeline.length; j++) {
-			loadedProject.tracks[i].part.add(currentTrack.timeline[j])
+			loadedProject.tracks[i].timeline.add(currentTrack.timeline[j])
 		}
 	}
 
