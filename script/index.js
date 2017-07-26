@@ -8,13 +8,10 @@ const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 const main = remote.require('./main')
 const Tone = require('Tone')
-const audio = require('./audio-engine')
+// const audio = require('./audio-engine')
+const ui = require('./ui')
 const fs = require('fs')
 const path = require('path')
-
-console.log("Node.js version: ", process.versions.node)
-console.log("Chromium version: ", process.versions.chrome)
-console.log("Electron version: ", process.versions.electron)
 
 var currentProject //The object containing all current project information
 var fileArray = [] //This is a list of all files recorded or imported
@@ -25,37 +22,20 @@ function getFileName(filepath) {
 	return filepath[filepath.length - 1] //Return test after last slash
 }
 
-function loadUIPlugin(pluginName) {
+function getPluginData(pluginName) {
 	var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
 
-	//Get the 'plugin.json' file
-	var pluginInfo = JSON.parse( fs.readFileSync(path.join(pluginPath, 'plugin.json'), 'utf-8') )
+	var pluginData = JSON.parse( fs.readFileSync(path.join(pluginPath, 'plugin.json'), 'utf-8') )
 
-	var htmlFile = path.join(pluginPath, pluginInfo.htmlFile)
+	// This is to replace relative paths with absolute
+	if (pluginData.hasOwnProperty('htmlFile')) {
+		pluginData.htmlFile = path.join(pluginPath, pluginData.htmlFile)
+	}
+	if (pluginData.hasOwnProperty('javaScriptFile')) {
+		pluginData.javaScriptFile = path.join(pluginPath, pluginData.javaScriptFile)
+	}
 
-	var newDiv = $('<div/>', { //Create the div for the plugin
-		class: 'subwindow',
-		load: htmlFile, //Load plugin HTML
-		appendTo: '#window-body' //Add the plugin div to the window
-	})
-
-	$(newDiv).resizable({
-		containment: "parent"
-	})
-	$(newDiv).draggable({
-		handle: ".header",
-		containment: "parent"
-	})
-	$(newDiv).css({width: '50em'})
-
-	//Run the plugin script
-	fs.readFile(path.join(pluginPath, pluginInfo.javaScriptFile), 'utf-8', function (err, data) {
-		if (!err) {
-			eval(data)
-		} else {
-			console.log(err)
-		}
-	})
+	return pluginData
 }
 
 function loadProject(filepath) {
@@ -81,39 +61,11 @@ ipcRenderer.on('importer', (event, arg) => {
 
 //UI
 
-loadUIPlugin('song-editor')
+ui.loadUIPlugin(getPluginData('song-editor'))
 
 $('#import').click( () => {
 	ipcRenderer.send('file-manager', 'Import Files')
 })
-
-function displayMessage(type, head, body) {
-	var newMessage = $('<div/>', { //Message window
-		class: 'message-box ' + type
-	})
-
-	var messageHead = $('<div/>', { //Message title bar
-		class: 'message-head',
-		html: head,
-		appendTo: newMessage //Add to window
-	})
-
-	var messageBody = $('<div/>', { //Message content
-		class: 'message-body',
-		html: body,
-		appendTo: newMessage //Add to window
-	})
-
-	var closeButton = $('<div/>', { //Close button
-		class: 'message-close',
-		html: '&times;',
-		appendTo: messageHead, //Add to title bar
-		click: () => {newMessage.remove()}
-	})
-
-	newMessage.prependTo('#message-area') //Add to start of message area
-	setTimeout(() => {newMessage.remove()}, 20000) //Remove after 20 seconds
-}
 
 //Testing
 
@@ -138,16 +90,16 @@ var testClip = {
 	]
 }
 
-var testTrack = new audio.Track('Test', 'midi')
-testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
+// var testTrack = new audio.Track('Test', 'midi')
+// testTrack.addSource(new Tone.PolySynth(6, Tone.Synth))
 // testTrack.addClip(testClip, '0:0'/*Start*/, '0:0'/*Offset*/, '2:0'/*Length*/)
 
-var audioTrack = new audio.Track('Test', 'audio')
+// var audioTrack = new audio.Track('Test', 'audio')
 
 // displayMessage('info', 'Test', 'Testing... Testing... 1, 2, 3...')
 // displayMessage('success', 'Alerts Working', 'User messages work.')
 // displayMessage('warning', 'Alert', 'Something might be going wrong.')
 // displayMessage('error', 'Error', 'Something probably went wrong.')
 
-loadProject('./example-project.json')
-console.log(currentProject)
+// loadProject('./example-project.json')
+// console.log(currentProject)
