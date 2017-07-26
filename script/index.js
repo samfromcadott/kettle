@@ -8,7 +8,7 @@ const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 const main = remote.require('./main')
 const Tone = require('Tone')
-// const audio = require('./audio-engine')
+const audio = require('./audio-engine')
 const ui = require('./ui')
 const fs = require('fs')
 const path = require('path')
@@ -103,3 +103,5 @@ var testClip = {
 
 // loadProject('./example-project.json')
 // console.log(currentProject)
+
+audio.addTrack('Test', 'audio')
