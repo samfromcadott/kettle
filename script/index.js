@@ -61,7 +61,7 @@ ipcRenderer.on('importer', (event, arg) => {
 
 //UI
 
-ui.loadUIPlugin(getPluginData('song-editor'))
+ui.loadUIPlugin(getPluginData('song-editor'), '#window-body')
 
 $('#import').click( () => {
 	ipcRenderer.send('file-manager', 'Import Files')

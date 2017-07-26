@@ -6,12 +6,9 @@ const {remote} = electron
 const {Menu}  = remote.require('electron')
 const fs = require('fs')
 
-exports.loadUIPlugin = function (pluginData) {
-	var newDiv = $('<div/>', { //Create the div for the plugin
-		class: 'subwindow',
-		load: pluginData.htmlFile, //Load plugin HTML
-		appendTo: '#window-body' //Add the plugin div to the window
-	})
+exports.loadUIPlugin = function (pluginData, targetDiv) {
+	//Load HTML file
+	$(targetDiv).load(pluginData.htmlFile)
 
 	//Run the plugin script
 	fs.readFile(pluginData.javaScriptFile, 'utf-8', function (err, data) {
