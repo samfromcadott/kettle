@@ -15,6 +15,29 @@ body {
 
 }
 
+// Song Editor
+@clear: rgba(255, 255, 255, 0);
+@measure-width: 30px;
+
+@timeline-grid: repeating-linear-gradient(
+	90deg,
+	black,
+	@clear 1px,
+	@clear @measure-width
+);
+
+@timeline-color: repeating-linear-gradient(
+	90deg,
+	white,
+	white @measure-width*4,
+	lightgrey @measure-width*4,
+	lightgrey @measure-width*8
+);
+
+div.song-editor.track-timeline {
+	background-image: @timeline-grid, @timeline-color;
+}
+
 // User messages
 @error-bg: #ff3b3b;
 @warning-bg: #ffe928;
