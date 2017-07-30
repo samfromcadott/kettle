@@ -39,13 +39,16 @@ function getPluginData(pluginName) {
 }
 
 function loadProject(filepath) {
-	fs.readFile(filepath, 'utf-8', function (err, data) {
-		if (!err) {
-			currentProject = audio.readProject( JSON.parse(data) )
-		} else {
-			displayMessage('error', 'Cannot Load Project', 'Could not open file:' + filepath)
-		}
-	})
+	// fs.readFileSync(filepath, 'utf-8', function (err, data) {
+	// 	if (!err) {
+	// 		currentProject = audio.readProject( JSON.parse(data) )
+	// 	} else {
+	// 		displayMessage('error', 'Cannot Load Project', 'Could not open file:' + filepath)
+	// 	}
+	// })
+
+	var data = fs.readFileSync(filepath, 'utf-8')
+	currentProject = audio.readProject( JSON.parse(data) )
 }
 
 //IPC Functions
@@ -102,3 +105,4 @@ var testClip = {
 // displayMessage('error', 'Error', 'Something probably went wrong.')
 
 loadProject('./example-project.json')
+console.log(currentProject)

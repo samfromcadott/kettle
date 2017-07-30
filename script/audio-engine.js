@@ -104,7 +104,6 @@ exports.readProject = function (projectJSON) {
 		}
 	}
 
-	console.log(loadedProject)
 	return loadedProject
 }
 
