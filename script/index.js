@@ -6,14 +6,16 @@ const electron = require('electron')
 const {remote} = electron
 const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
-const main = remote.require('./main')
+
+const angular = require('angular')
 const Tone = require('Tone')
-const audio = require('./audio-engine')
-const ui = require('./ui')
 const fs = require('fs')
 const path = require('path')
 
-var currentProject //The object containing all current project information
+const main = remote.require('./main')
+const audio = require('./audio-engine')
+const ui = require('./ui')
+
 var fileArray = [] //This is a list of all files recorded or imported
 
 function getFileName(filepath) {
@@ -48,7 +50,7 @@ function loadProject(filepath) {
 	// })
 
 	var data = fs.readFileSync(filepath, 'utf-8')
-	currentProject = audio.readProject( JSON.parse(data) )
+	return audio.readProject( JSON.parse(data) )
 }
 
 //IPC Functions
@@ -104,5 +106,9 @@ var testClip = {
 // displayMessage('warning', 'Alert', 'Something might be going wrong.')
 // displayMessage('error', 'Error', 'Something probably went wrong.')
 
-loadProject('./example-project.json')
-console.log(currentProject)
+var app = angular.module('mainWindow', []);
+
+app.controller('mainController', function($scope) {
+	$scope.currentProject = loadProject('./example-project.json')  //The object containing all current project information
+	console.log($scope.currentProject)
+})
