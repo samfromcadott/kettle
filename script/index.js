@@ -40,6 +40,20 @@ function getPluginData(pluginName) {
 	return pluginData
 }
 
+function loadUIPlugin (pluginData, targetDiv) {
+	//Load HTML file
+	$(targetDiv).load(pluginData.htmlFile)
+
+	//Run the plugin script
+	fs.readFile(pluginData.javaScriptFile, 'utf-8', function (err, data) {
+		if (!err) {
+			eval(data)
+		} else {
+			console.log(err)
+		}
+	})
+}
+
 function loadProject(filepath) {
 	// fs.readFileSync(filepath, 'utf-8', function (err, data) {
 	// 	if (!err) {
@@ -65,8 +79,6 @@ ipcRenderer.on('importer', (event, arg) => {
 })
 
 //UI
-
-ui.loadUIPlugin(getPluginData('song-editor'), '#window-body')
 
 $('#import').click( () => {
 	ipcRenderer.send('file-manager', 'Import Files')
@@ -106,9 +118,17 @@ var testClip = {
 // displayMessage('warning', 'Alert', 'Something might be going wrong.')
 // displayMessage('error', 'Error', 'Something probably went wrong.')
 
-var app = angular.module('mainWindow', []);
+// Angular App
+
+var currentProject = loadProject('./example-project.json')
+
+var app = angular.module('mainWindow', [])
 
 app.controller('mainController', function($scope) {
-	$scope.currentProject = loadProject('./example-project.json')  //The object containing all current project information
+	$scope.currentProject = currentProject  //The object containing all current project information
 	console.log($scope.currentProject)
 })
+
+loadUIPlugin(getPluginData('song-editor'), '#window-body')
+
+console.log(app)

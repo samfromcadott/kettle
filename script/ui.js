@@ -1,3 +1,5 @@
+require('./index') //This is so plugins can use varaibles defined in index.js
+
 window.$ = window.jQuery = require('jquery')
 require('../node_modules/jquery-ui-dist/jquery-ui.js')
 
@@ -5,20 +7,6 @@ const electron = require('electron')
 const {remote} = electron
 const {Menu}  = remote.require('electron')
 const fs = require('fs')
-
-exports.loadUIPlugin = function (pluginData, targetDiv) {
-	//Load HTML file
-	$(targetDiv).load(pluginData.htmlFile)
-
-	//Run the plugin script
-	fs.readFile(pluginData.javaScriptFile, 'utf-8', function (err, data) {
-		if (!err) {
-			eval(data)
-		} else {
-			console.log(err)
-		}
-	})
-}
 
 exports.displayMessage = function (type, head, body) {
 	var newMessage = $('<div/>', { //Message window
