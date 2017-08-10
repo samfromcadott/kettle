@@ -5,8 +5,28 @@ require('../node_modules/jquery-ui-dist/jquery-ui.js')
 
 const electron = require('electron')
 const {remote} = electron
-const {Menu}  = remote.require('electron')
-const fs = require('fs')
+const {Menu, MenuItem} = remote
+
+// Right click menu
+
+var rightClickTemplate = [
+	{label: 'Split Up', click() { console.log('Split Up') }},
+	{label: 'Split Down', click() { console.log('Split Down') }},
+	{label: 'Split Left', click() { console.log('Split Left') }},
+	{label: 'Split Right', click() { console.log('Split Right') }},
+	{label: 'Close Panel', click() { console.log('Panel Closed') }},
+]
+
+$('body').contextmenu( (event) => {
+	event.preventDefault() //Prevent predefined menu for appearing
+
+	var rightClickMenu = Menu.buildFromTemplate(rightClickTemplate)
+	rightClickMenu.popup(remote.getCurrentWindow()) //Show the menu
+})
+
+exports.rightClickTemplate = rightClickTemplate
+
+// User Messages
 
 exports.displayMessage = function (type, head, body) {
 	var newMessage = $('<div/>', { //Message window
