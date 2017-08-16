@@ -17,6 +17,11 @@ const audio = require('./audio-engine')
 const ui = require('./ui')
 
 var fileArray = [] //This is a list of all files recorded or imported
+var pluginList = [
+	{name: 'Song Editor', file: 'song-editor'}
+]
+
+exports.pluginList = pluginList
 
 function getFileName(filepath) {
 	filepath = filepath.replace(/\\/g,"\/") //Convert Windows paths to UNIX
@@ -129,6 +134,11 @@ app.controller('mainController', function($scope) {
 	console.log($scope.currentProject)
 })
 
-loadUIPlugin(getPluginData('song-editor'), '#window-body')
+angular.module('mainWindow').directive('panel', function() {
+	return ui.panelDirective
+})
 
-console.log(app)
+exports.app = app
+
+
+// loadUIPlugin(getPluginData('song-editor'), '#window-body')
