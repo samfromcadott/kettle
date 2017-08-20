@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Tone.js Song</title>
-	</head>
-	<body>
+<head>
+	<meta charset="utf-8">
+	<title>Tone.js Song</title>
 
-	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.10.0/Tone.min.js" charset="utf-8"></script>
+</head>
+<body>
+	<button id="play-button">&#9658;</button>
+
+	<script>
+	$('#play-button').click( () =>{
+		if (Tone.Transport.state == "stopped") {
+			Tone.Transport.start()
+			$('#play-button').html('&#9724;')
+		} else if (Tone.Transport.state == "started") {
+			Tone.Transport.stop()
+			$('#play-button').html('&#9658;')
+		}
+	})
+	</script>
+</body>
 </html>
