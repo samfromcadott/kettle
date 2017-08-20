@@ -22,7 +22,7 @@ function AudioTrack (name, type) {
 	this.buildTree = function () {
 		for (var node in this.effects) {
 			if (object.hasOwnProperty(node)) {
-				
+
 			}
 		}
 	}
