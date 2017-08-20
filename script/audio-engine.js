@@ -17,27 +17,41 @@ function Track(name, type) {
 
 function AudioTrack (name, type) {
 	Track.call(this, name, type) //Inherit from Track()
-	this.source = new Tone.Player()
+	this.clipSource = new Tone.Player()
+
+	this.buildTree = function () {
+		for (var node in this.effects) {
+			if (object.hasOwnProperty(node)) {
+				
+			}
+		}
+	}
 
 	this.playClip = function (clip) {
-		this.source.buffer = exports.audioSamples.get(clip.data)
-		this.source.retrigger = true
+		this.clipSource.buffer = exports.audioSamples.get(clip.data)
+		this.clipSource.retrigger = true
 
 		if (clip.loop == true) { //Things to do for looping audio clips
-			this.source.loop = true
-			this.source.loopStart = clip.loopStart
-			this.source.loopEnd = clip.loopEnd
+			this.clipSource.loop = true
+			this.clipSource.loopStart = clip.loopStart
+			this.clipSource.loopEnd = clip.loopEnd
 		}
 
-		this.source.start(0, clip.start, clip.length)
+		this.clipSource.start(0, clip.start, clip.length)
 	}
 }
 
 function MidiTrack (name, type) {
 	Track.call(this, name, type) //Inherit from Track()
 
+	this.notes = {} //Object to
+
 	this.addSource = function (source) {
 		this.source = source
+	}
+
+	this.playNote = function (noteData) {
+
 	}
 
 	this.playClip = function (clip) {
@@ -51,7 +65,7 @@ function addTrack (name, type) {
 		'midi': MidiTrack
 	}
 
-	newTrack = new trackTypes [type] (name, type)
+	var newTrack = new trackTypes [type] (name, type)
 
 	return newTrack
 }
