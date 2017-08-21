@@ -11,6 +11,8 @@
 	<button id="play-button">&#9658;</button>
 
 	<script>
+	Tone.Transport.stop()
+
 	$('#play-button').click( () =>{
 		if (Tone.Transport.state == "stopped") {
 			Tone.Transport.start()
@@ -20,6 +22,31 @@
 			$('#play-button').html('&#9658;')
 		}
 	})
+
+	// var padSynth = {
+	// 	0: {
+	// 		name: 'Note',
+	// 		type: new Tone.Signal(),
+	// 		connect:
+	// 	}
+	// }
+
+	function playPadSynth(freq) {
+		var inputFreq = new Tone.Signal(freq)
+		var osc = new Tone.Oscillator(440, "sine")
+		var ampEnv = new Tone.AmplitudeEnvelope()
+
+		inputFreq.connect(osc.frequency)
+		osc.connect(ampEnv)
+		ampEnv.toMaster()
+
+		osc.start()
+		ampEnv.triggerAttackRelease('4n')
+	}
+
+	var padPart = new Tone.Event( (time, value) => {
+		playPadSynth(value)
+	}, 1000).start(0)
 	</script>
 </body>
 </html>
