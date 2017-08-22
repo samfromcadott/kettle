@@ -35,6 +35,8 @@
 	// 	}
 	// }
 
+	var padMixer = new Tone.PanVol().toMaster()
+
 	function playPadSynth(freq) {
 		var inputFreq = new Tone.Signal(freq)
 		var osc = new Tone.Oscillator(440, "square")
@@ -42,7 +44,7 @@
 
 		inputFreq.connect(osc.frequency)
 		osc.connect(ampEnv)
-		ampEnv.toMaster()
+		ampEnv.connect(padMixer)
 
 		osc.start()
 		ampEnv.triggerAttackRelease('4n')
