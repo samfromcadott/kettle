@@ -29,25 +29,57 @@
 
 	var padSynth = {
 		mixer: new Tone.PanVol(0, 0).toMaster(),
+		nodes: {
+			inputFreq: {
+				target: [0, 'frequency']
+			},
+			0: {
+				type: Tone.Oscillator,
+				values: {
+					type: 'sawtooth'
+				},
+				target: 1
+			},
+			1: {
+				type: Tone.AmplitudeEnvelope,
+				values: {},
+				target: 'mixer'
+			}
+		},
 		voices: {},
 		playNote: function (note, velocity) {
 			var newNote = {}
 
-			newNote.inputFreq = new Tone.Signal(noteToFreq(note))
-			newNote.osc = new Tone.Oscillator(440, "sawtooth")
-			newNote.ampEnv = new Tone.AmplitudeEnvelope()
+			for (var node in this.nodes) {
+				if (this.nodes.hasOwnProperty(node)) {
+					if (node == 'inputFreq') {
+						newNote.inputFreq = new Tone.Signal(noteToFreq(note))
+					} else {
+						newNote[node] = new this.nodes[node].type(this.nodes[node].values)
+					}
+				}
+			}
 
-			newNote.inputFreq.connect(newNote.osc.frequency)
-			newNote.osc.connect(newNote.ampEnv)
-			newNote.ampEnv.connect(this.mixer)
+			for (var currentNode in this.nodes) {
+				if (this.nodes.hasOwnProperty(currentNode)) {
+					var currentTarget = this.nodes[currentNode].target
+					if (currentTarget == 'mixer') {
+						newNote[currentNode].connect(this.mixer)
+					} else if (Array.isArray(currentTarget)) {
+						newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
+					} else {
+						newNote[currentNode].connect(newNote[currentTarget])
+					}
+				}
+			}
 
-			newNote.osc.start()
-			newNote.ampEnv.triggerAttack(velocity)
+			newNote[0].start()
+			newNote[1].triggerAttack(velocity)
 
 			this.voices[note] = newNote
 		},
 		stopNote: function (note, length) {
-			this.voices[note].ampEnv.triggerRelease('+' + length)
+			this.voices[note][1].triggerRelease('+' + length)
 		}
 	}
 
