@@ -37,12 +37,12 @@ var padSynth = {
 	playNote: function (note, velocity) {
 		var newNote = {}
 
-		for (var node in this.nodes) {
-			if (this.nodes.hasOwnProperty(node)) {
-				if (node == 'inputFreq') {
+		for (var currentNode in this.nodes) {
+			if (this.nodes.hasOwnProperty(currentNode)) {
+				if (currentNode == 'inputFreq') {
 					newNote.inputFreq = new Tone.Signal(noteToFreq(note))
 				} else {
-					newNote[node] = new this.nodes[node].type(this.nodes[node].values)
+					newNote[currentNode] = new this.nodes[currentNode].type(this.nodes[currentNode].values)
 				}
 			}
 		}
@@ -60,8 +60,15 @@ var padSynth = {
 			}
 		}
 
-		newNote[0].start()
-		newNote[1].triggerAttack(velocity)
+		for (var currentNode in newNote) {
+			if (newNote.hasOwnProperty(currentNode)) {
+				if (typeof newNote[currentNode].start === 'function') {
+					newNote[currentNode].start()
+				} else if (typeof newNote[currentNode].triggerAttack === 'function') {
+					newNote[currentNode].triggerAttack(velocity)
+				}
+			}
+		}
 
 		this.voices[note] = newNote
 	},
