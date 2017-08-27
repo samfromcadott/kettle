@@ -73,7 +73,13 @@ var padSynth = {
 		this.voices[note] = newNote
 	},
 	stopNote: function (note, length) {
-		this.voices[note][1].triggerRelease('+' + length)
+		for (var currentNode in this.voices[note]) {
+			if (this.voices[note].hasOwnProperty(currentNode)) {
+				if (typeof this.voices[note][currentNode].triggerRelease === 'function') {
+					this.voices[note][currentNode].triggerRelease('+' + length)
+				}
+			}
+		}
 	}
 }
 
