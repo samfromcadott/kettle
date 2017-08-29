@@ -14,6 +14,20 @@ function noteToFreq(note) {
 	return 2**((note-69)/12) * 440
 }
 
+function MidiTrack(nodes) {
+	this.mixer = new Tone.PanVol(0, 0).toMaster()
+	this.nodes = nodes
+	this.voices = {}
+
+	this.playNote = function (note, velocity) {
+
+	}
+
+	this.stopNote = function (note, length) {
+
+	}
+}
+
 var padSynth = {
 	mixer: new Tone.PanVol(0, 0).toMaster(),
 	nodes: {
@@ -95,7 +109,7 @@ var padSynth = {
 	}
 }
 
-minorScale = [{time: '0:0', length: '1m', note: 57, velocity: 1},{time: '1:0', length: '1m', note: 59, velocity: 1}]
+minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:1', length: '4n', note: 59, velocity: 1}]
 
 var padPart = new Tone.Part( (time, value) => {
 	padSynth.playNote(value.note, value.velocity)
