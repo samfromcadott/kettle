@@ -20,46 +20,6 @@ function MidiTrack(nodes) {
 	this.voices = {}
 
 	this.playNote = function (note, velocity) {
-
-	}
-
-	this.stopNote = function (note, length) {
-
-	}
-}
-
-var padSynth = {
-	mixer: new Tone.PanVol(0, 0).toMaster(),
-	nodes: {
-		inputFreq: {
-			target: [0, 'frequency']
-		},
-		0: {
-			type: Tone.Oscillator,
-			values: {
-				type: 'sawtooth'
-			},
-			target: 1
-		},
-		1: {
-			type: Tone.AmplitudeEnvelope,
-			values: {},
-			target: 'mixer'
-		},
-		2: {
-			type: Tone.ScaledEnvelope,
-			values: {
-				min: -50,
-				max: 25,
-				attack: 0.6,
-				decay: 0.1,
-				sustain: 0,
-			},
-			target: [0, 'detune']
-		}
-	},
-	voices: {},
-	playNote: function (note, velocity) {
 		var newNote = {}
 		newNote.velocity = new Tone.Gain(velocity).connect(this.mixer)
 
@@ -98,8 +58,9 @@ var padSynth = {
 		}
 
 		this.voices[note] = newNote
-	},
-	stopNote: function (note, length) {
+	}
+
+	this.stopNote = function (note, length) {
 		for (var currentNode in this.voices[note]) {
 			if (this.voices[note].hasOwnProperty(currentNode)) {
 				if (typeof this.voices[note][currentNode].triggerRelease === 'function') {
@@ -109,6 +70,35 @@ var padSynth = {
 		}
 	}
 }
+
+var padSynth = new MidiTrack({
+	inputFreq: {
+		target: [0, 'frequency']
+	},
+	0: {
+		type: Tone.Oscillator,
+		values: {
+			type: 'sawtooth'
+		},
+		target: 1
+	},
+	1: {
+		type: Tone.AmplitudeEnvelope,
+		values: {},
+		target: 'mixer'
+	},
+	2: {
+		type: Tone.ScaledEnvelope,
+		values: {
+			min: -50,
+			max: 25,
+			attack: 0.6,
+			decay: 0.1,
+			sustain: 0,
+		},
+		target: [0, 'detune']
+	}
+})
 
 minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:0', length: '0:2', note: 61, velocity: 0.3}]
 
