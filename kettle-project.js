@@ -49,8 +49,8 @@ var padSynth = {
 		2: {
 			type: Tone.ScaledEnvelope,
 			values: {
-				min: -1200,
-				max: 1200,
+				min: -50,
+				max: 25,
 				attack: 0.6,
 				decay: 0.1,
 				sustain: 0,
@@ -61,6 +61,7 @@ var padSynth = {
 	voices: {},
 	playNote: function (note, velocity) {
 		var newNote = {}
+		newNote.velocity = new Tone.Gain(velocity).connect(this.mixer)
 
 		for (var currentNode in this.nodes) {
 			if (this.nodes.hasOwnProperty(currentNode)) {
@@ -76,7 +77,7 @@ var padSynth = {
 			if (this.nodes.hasOwnProperty(currentNode)) {
 				var currentTarget = this.nodes[currentNode].target
 				if (currentTarget == 'mixer') {
-					newNote[currentNode].connect(this.mixer)
+					newNote[currentNode].connect(newNote.velocity)
 				} else if (Array.isArray(currentTarget)) {
 					console.log(currentNode + ': ' + currentTarget)
 					newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
@@ -109,7 +110,7 @@ var padSynth = {
 	}
 }
 
-minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:1', length: '4n', note: 59, velocity: 1}]
+minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:0', length: '0:2', note: 61, velocity: 0.3}]
 
 var padPart = new Tone.Part( (time, value) => {
 	padSynth.playNote(value.note, value.velocity)
