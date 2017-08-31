@@ -39,7 +39,6 @@ function MidiTrack(nodes) {
 				if (currentTarget == 'mixer') {
 					newNote[currentNode].connect(newNote.velocity)
 				} else if (Array.isArray(currentTarget)) {
-					console.log(currentNode + ': ' + currentTarget)
 					newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
 				} else {
 					newNote[currentNode].connect(newNote[currentTarget])
