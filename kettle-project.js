@@ -39,7 +39,13 @@ function MidiTrack(nodes) {
 				if (currentTarget == 'mixer') {
 					newNote[currentNode].connect(newNote.velocity)
 				} else if (Array.isArray(currentTarget)) {
-					newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
+					if (Array.isArray(currentTarget[0])) {
+						for (var i = 0; i < currentTarget.length; i++) {
+							newNote[currentNode].connect( newNote[currentTarget[i][0]] [currentTarget[i][1]] )
+						}
+					} else {
+						newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
+					}
 				} else {
 					newNote[currentNode].connect(newNote[currentTarget])
 				}
@@ -72,7 +78,7 @@ function MidiTrack(nodes) {
 
 var padSynth = new MidiTrack({
 	inputFreq: {
-		target: [0, 'frequency']
+		target: [[0, 'frequency'],[3, 'frequency']]
 	},
 	0: {
 		type: Tone.Oscillator,
@@ -96,10 +102,18 @@ var padSynth = new MidiTrack({
 			sustain: 0,
 		},
 		target: [0, 'detune']
+	},
+	3: {
+		type: Tone.Oscillator,
+		values: {
+			type: 'sine',
+			detune: 1200
+		},
+		target: 1
 	}
 })
 
-minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:0', length: '0:2', note: 61, velocity: 0.3}]
+minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}]
 
 var padPart = new Tone.Part( (time, value) => {
 	padSynth.playNote(value.note, value.velocity)
