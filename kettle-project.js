@@ -19,17 +19,28 @@ function MidiTrack(nodes) {
 	this.nodes = nodes
 	this.voices = {}
 
+	for (var currentNode in this.nodes) {
+		if (this.nodes.hasOwnProperty(currentNode)) {
+			if (this.nodes[currentNode].retrigger == false) {
+				this[currentNode] = new this.nodes[currentNode].type(this.nodes[currentNode].values)
+			}
+		}
+	}
+
 	this.playNote = function (note, velocity) {
 		var newNote = {}
 		newNote.velocity = new Tone.Gain(velocity).connect(this.mixer)
 
 		for (var currentNode in this.nodes) {
-			if (this.nodes.hasOwnProperty(currentNode)) {
+			if (this.nodes.hasOwnProperty(currentNode) && this.nodes[currentNode].retrigger != false) {
 				if (currentNode == 'inputFreq') {
 					newNote.inputFreq = new Tone.Signal(noteToFreq(note))
 				} else {
 					newNote[currentNode] = new this.nodes[currentNode].type(this.nodes[currentNode].values)
 				}
+			}
+			if (this.nodes.hasOwnProperty(currentNode) && this.nodes[currentNode].retrigger == false) {
+					newNote[currentNode] = this[currentNode]
 			}
 		}
 
@@ -90,7 +101,7 @@ var padSynth = new MidiTrack({
 	1: {
 		type: Tone.AmplitudeEnvelope,
 		values: {},
-		target: 'mixer'
+		target: 4
 	},
 	2: {
 		type: Tone.ScaledEnvelope,
@@ -110,10 +121,17 @@ var padSynth = new MidiTrack({
 			detune: 1200
 		},
 		target: 1
+	},
+	4: {
+		type: Tone.AutoFilter,
+		values: {
+			frequency: 10
+		},
+		target: 'mixer'
 	}
 })
 
-minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}]
+minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}, {time: '0:2', length: '4n', note: 62, velocity: 1}]
 
 var padPart = new Tone.Part( (time, value) => {
 	padSynth.playNote(value.note, value.velocity)
