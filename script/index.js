@@ -7,7 +7,7 @@ const {remote} = electron
 const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 
-const angular = require('angular')
+const Vue = require('vue')
 const Tone = require('Tone')
 const fs = require('fs')
 const path = require('path')
@@ -125,20 +125,20 @@ var testClip = {
 
 // Angular App
 
-var currentProject = loadProject('./example-project.json')
-
-var app = angular.module('mainWindow', [])
-
-app.controller('mainController', function($scope) {
-	$scope.currentProject = currentProject  //The object containing all current project information
-	console.log($scope.currentProject)
-})
-
-angular.module('mainWindow').directive('panel', function() {
-	return ui.panelDirective
-})
-
-exports.app = app
+// var currentProject = loadProject('./example-project.json')
+//
+// var app = angular.module('mainWindow', [])
+//
+// app.controller('mainController', function($scope) {
+// 	$scope.currentProject = currentProject  //The object containing all current project information
+// 	console.log($scope.currentProject)
+// })
+//
+// angular.module('mainWindow').directive('panel', function() {
+// 	return ui.panelDirective
+// })
+//
+// exports.app = app
 
 
 // loadUIPlugin(getPluginData('song-editor'), '#window-body')
