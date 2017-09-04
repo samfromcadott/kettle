@@ -7,7 +7,7 @@ const {remote} = electron
 const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 
-const Vue = require('vue')
+const Vue = require('vue/dist/vue.js')
 const Tone = require('Tone')
 const fs = require('fs')
 const path = require('path')
@@ -81,6 +81,12 @@ ipcRenderer.on('importer', (event, arg) => {
 		audio.audioSamples.add(getFileName(arg[i]), arg[i]) //Adds samples to buffer
 		$('#file-list').append('<li><a>'+getFileName(arg[i])+'</a></li>')
 	}
+})
+
+//Vue App
+
+var mainWindow = new Vue({
+	el: '#window-body'
 })
 
 //UI
