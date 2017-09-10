@@ -50,6 +50,44 @@ exports.rightClickTemplate = rightClickTemplate
 
 // Panel system
 
+Vue.component('panel-frame', {
+	props: ['direction', 'ratio'],
+	template: '<div v-bind:style="containerStyle"> <div ref="firstPanel" v-bind:style="firstPanelStyle"></div> <div ref="secondPanel" v-bind:style="secondPanelStyle"></div> </div>',
+	data: function () {
+		if (this.direction == 'row') {
+			firstPanelStyle = {width: this.ratio + '%', backgroundColor: 'red'}
+		}
+		else firstPanelStyle = {height: this.ratio + '%', backgroundColor: 'red'}
+
+		return {
+			containerStyle: {
+				display: 'flex',
+				flexDirection: this.direction,
+				width: '30em',
+				height: '20em'
+			},
+			firstPanelStyle: firstPanelStyle,
+			secondPanelStyle: {
+				backgroundColor: 'blue',
+				flex: 1
+			}
+		}
+	},
+	mounted: function () {
+		if (this.direction == 'row') {
+			$(this.$refs.firstPanel).resizable({
+				containment: "parent",
+				handles: "e"
+			})
+		} else {
+			$(this.$refs.firstPanel).resizable({
+				containment: "parent",
+				handles: "s"
+			})
+		}
+	}
+})
+
 function spitPanel(panel) {
 	var angle
 	var panelMask = $('<div/>', {
