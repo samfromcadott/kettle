@@ -19,6 +19,48 @@ function MidiTrack(nodes) {
 	this.nodes = nodes
 	this.voices = {}
 
+	function makeNodes(nodeTree, currentNode, newNote, note) {
+		if (nodeTree.hasOwnProperty(currentNode) && nodeTree[currentNode].retrigger != false) {
+			if (currentNode == 'inputFreq') {
+				newNote.inputFreq = new Tone.Signal(noteToFreq(note))
+			} else {
+				newNote[currentNode] = new nodeTree[currentNode].type(nodeTree[currentNode].values)
+			}
+		}
+		if (nodeTree.hasOwnProperty(currentNode) && nodeTree[currentNode].retrigger == false) {
+				newNote[currentNode] = this[currentNode]
+		}
+	}
+
+	function connectNodes(nodeTree, currentNode, newNote) {
+		if (nodeTree.hasOwnProperty(currentNode)) {
+			var currentTarget = nodeTree[currentNode].target
+			if (currentTarget == 'mixer') {
+				newNote[currentNode].connect(newNote.velocity)
+			} else if (Array.isArray(currentTarget)) {
+				if (Array.isArray(currentTarget[0])) {
+					for (var i = 0; i < currentTarget.length; i++) {
+						newNote[currentNode].connect( newNote[currentTarget[i][0]] [currentTarget[i][1]] )
+					}
+				} else {
+					newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
+				}
+			} else {
+				newNote[currentNode].connect(newNote[currentTarget])
+			}
+		}
+	}
+
+	function startNodes(currentNode, newNote) {
+		if (newNote.hasOwnProperty(currentNode)) {
+			if (typeof newNote[currentNode].start === 'function') {
+				newNote[currentNode].start()
+			} else if (typeof newNote[currentNode].triggerAttack === 'function') {
+				newNote[currentNode].triggerAttack()
+			}
+		}
+	}
+
 	for (var currentNode in this.nodes) {
 		if (this.nodes.hasOwnProperty(currentNode)) {
 			if (this.nodes[currentNode].retrigger == false) {
@@ -31,47 +73,9 @@ function MidiTrack(nodes) {
 		var newNote = {}
 		newNote.velocity = new Tone.Gain(velocity).connect(this.mixer)
 
-		for (var currentNode in this.nodes) {
-			if (this.nodes.hasOwnProperty(currentNode) && this.nodes[currentNode].retrigger != false) {
-				if (currentNode == 'inputFreq') {
-					newNote.inputFreq = new Tone.Signal(noteToFreq(note))
-				} else {
-					newNote[currentNode] = new this.nodes[currentNode].type(this.nodes[currentNode].values)
-				}
-			}
-			if (this.nodes.hasOwnProperty(currentNode) && this.nodes[currentNode].retrigger == false) {
-					newNote[currentNode] = this[currentNode]
-			}
-		}
-
-		for (var currentNode in this.nodes) {
-			if (this.nodes.hasOwnProperty(currentNode)) {
-				var currentTarget = this.nodes[currentNode].target
-				if (currentTarget == 'mixer') {
-					newNote[currentNode].connect(newNote.velocity)
-				} else if (Array.isArray(currentTarget)) {
-					if (Array.isArray(currentTarget[0])) {
-						for (var i = 0; i < currentTarget.length; i++) {
-							newNote[currentNode].connect( newNote[currentTarget[i][0]] [currentTarget[i][1]] )
-						}
-					} else {
-						newNote[currentNode].connect(newNote[currentTarget[0]] [currentTarget[1]])
-					}
-				} else {
-					newNote[currentNode].connect(newNote[currentTarget])
-				}
-			}
-		}
-
-		for (var currentNode in newNote) {
-			if (newNote.hasOwnProperty(currentNode)) {
-				if (typeof newNote[currentNode].start === 'function') {
-					newNote[currentNode].start()
-				} else if (typeof newNote[currentNode].triggerAttack === 'function') {
-					newNote[currentNode].triggerAttack()
-				}
-			}
-		}
+		for (var currentNode in this.nodes) makeNodes(this.nodes, currentNode, newNote, note)
+		for (var currentNode in this.nodes) connectNodes(this.nodes, currentNode, newNote)
+		for (var currentNode in newNote) startNodes(currentNode, newNote)
 
 		this.voices[note] = newNote
 	}
@@ -125,13 +129,13 @@ var padSynth = new MidiTrack({
 	4: {
 		type: Tone.AutoFilter,
 		values: {
-			frequency: 10
+			frequency: 20
 		},
 		target: 'mixer'
 	}
 })
 
-minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 1},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}, {time: '0:2', length: '4n', note: 62, velocity: 1}]
+minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 0.8},{time: '0:0:1', length: '4n', note: 52, velocity: 0.8},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}, {time: '1:0', length: '4n', note: 62, velocity: 1}, {time: '1:0:1', length: '4n', note: 62, velocity: 1}]
 
 var padPart = new Tone.Part( (time, value) => {
 	padSynth.playNote(value.note, value.velocity)
