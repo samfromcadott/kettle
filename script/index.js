@@ -1,6 +1,6 @@
 //Renderer process for main window
 window.$ = window.jQuery = require('jquery')
-require('../node_modules/jquery-ui-dist/jquery-ui.js')
+require('jquery-ui-dist/jquery-ui.js')
 
 const electron = require('electron')
 const {remote} = electron

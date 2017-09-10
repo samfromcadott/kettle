@@ -1,7 +1,7 @@
 const index = require('./index') //This is so plugins can use varaibles defined in index.js
 
 window.$ = window.jQuery = require('jquery')
-require('../node_modules/jquery-ui-dist/jquery-ui.js')
+require('jquery-ui-dist/jquery-ui.js')
 
 const electron = require('electron')
 const {remote} = electron
