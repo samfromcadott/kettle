@@ -6,7 +6,7 @@ require('../node_modules/jquery-ui-dist/jquery-ui.js')
 const electron = require('electron')
 const {remote} = electron
 const {Menu, MenuItem} = remote
-const Vue = require('vue');
+const Vue = require('vue/dist/vue.js')
 
 
 var activeElement, activePanel
