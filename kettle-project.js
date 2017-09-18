@@ -18,6 +18,18 @@ function MidiTrack(nodes) {
 	this.mixer = new Tone.PanVol(0, 0).toMaster()
 	this.nodes = nodes
 	this.voices = {}
+	this.timeline = [{time: '0:0', length: '4n', note: 57, velocity: 0.8},{time: '0:0:1', length: '4n', note: 52, velocity: 0.8},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}, {time: '1:0', length: '4n', note: 62, velocity: 1}, {time: '1:0:1', length: '4n', note: 62, velocity: 1}]
+	this.part = new Tone.Part( (time, value) => {
+		this.playNote(value.note, value.velocity)
+		this.stopNote(value.note, value.length)
+	}, this.timeline).start(0)
+
+	this.playClip = function (clip) {
+		return new Tone.Part( (time, value) => {
+			this.playNote(value.note, value.velocity)
+			this.stopNote(value.note, value.length)
+		}, clip).start()
+	}
 
 	function makeNodes(nodeTree, currentNode, newNote, note) {
 		if (nodeTree.hasOwnProperty(currentNode) && nodeTree[currentNode].retrigger != false) {
@@ -137,7 +149,9 @@ var padSynth = new MidiTrack({
 
 minorScale = [{time: '0:0', length: '4n', note: 57, velocity: 0.8},{time: '0:0:1', length: '4n', note: 52, velocity: 0.8},{time: '0:1', length: '0:2', note: 61, velocity: 0.3}, {time: '1:0', length: '4n', note: 62, velocity: 1}, {time: '1:0:1', length: '4n', note: 62, velocity: 1}]
 
-var padPart = new Tone.Part( (time, value) => {
-	padSynth.playNote(value.note, value.velocity)
-	padSynth.stopNote(value.note, value.length)
-}, minorScale).start(0)
+padSynth.playClip(minorScale)
+
+// var padPart = new Tone.Part( (time, value) => {
+// 	padSynth.playNote(value.note, value.velocity)
+// 	padSynth.stopNote(value.note, value.length)
+// }, minorScale).start(0)
