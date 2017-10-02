@@ -134,6 +134,39 @@ function MidiTrack(nodes) {
 
 }
 
+var bassSynth = new MidiTrack({
+	inputFreq: {
+		target: [{node: 0, value: 'frequency'}, {node: 1, value: 'frequency'}]
+	},
+	0: {
+		type: Tone.Oscillator,
+		values: {
+			type: 'sine'
+		},
+		target: 2
+	},
+	1: {
+		type: Tone.Oscillator,
+		values: {
+			type: 'square',
+			detune: 1200
+		},
+		target: 3
+	},
+	2: {
+		type: Tone.AmplitudeEnvelope,
+		values: {},
+		target: 'mixer'
+	},
+	3: {
+		type: Tone.Gain,
+		values: {
+			gain: 0.5
+		},
+		target: 2
+	}
+})
+
 var padSynth = new MidiTrack({
 	inputFreq: {
 		target: [{node: 0, value: 'frequency'}, {node: 3, value: 'frequency'}]
@@ -179,6 +212,18 @@ var padSynth = new MidiTrack({
 	}
 })
 
+bassLine = [
+	{time: '0:0:0', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:0:2', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:1:0', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:1:2', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:2:0', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:2:2', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:3:0', length: '8n', note: 33, velocity: 0.8},
+	{time: '0:3:2', length: '8n', note: 33, velocity: 0.8},
+	{time: '1:0', length: '8n', note: 36, velocity: 0.8}
+]
+
 minorScale = [
 	{time: '0:0', length: '4n', note: 57, velocity: 0.8},
 	{time: '0:1', length: '4n', note: 59, velocity: 0.8},
@@ -187,3 +232,4 @@ minorScale = [
 ]
 
 padSynth.part.add('0:0', minorScale)
+bassSynth.part.add('0:0', bassLine)
