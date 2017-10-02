@@ -16,9 +16,12 @@ function noteToFreq(note) {
 
 function MidiTrack(nodes) {
 	this.mixer = new Tone.PanVol(0, 0).toMaster()
+
 	this.nodes = nodes
-	this.voices = {}
+
+	this.voices = {} //All active notes
 	this.timeline = [] //This is an array of clips in the track
+
 	this.part = new Tone.Part( (time, value) => {
 		this.playClip(value)
 	}, this.timeline).start(0)
@@ -43,22 +46,25 @@ function MidiTrack(nodes) {
 		}
 	}
 
+	//Create non-retriggering nodes
 	for (var currentNode in this.nodes) {
-		if (this.nodes.hasOwnProperty(currentNode)) {
-			if (this.nodes[currentNode].retrigger == false) {
+		if (this.nodes.hasOwnProperty(currentNode)) { //Iterate over node tree
+
+			if (this.nodes[currentNode].retrigger == false) { //If the node doesn't retrigger
 				this[currentNode] = new this.nodes[currentNode].type(this.nodes[currentNode].values)
+
 			}
+
 		}
 	}
 
 	this.playNote = function (note, velocity) {
-		var newNote = {}
+		var newNote = {} //Node tree of the new note
 		newNote.velocity = new Tone.Gain(velocity).connect(this.mixer)
 
 		//Make nodes
 		for (var currentNode in this.nodes) {
-
-			if ( this.nodes.hasOwnProperty(currentNode) ) {
+			if ( this.nodes.hasOwnProperty(currentNode) ) { //Iterate over node tree
 
 				if (currentNode == 'inputFreq') { //inputFreq is a signal carrying current note frequency
 					newNote.inputFreq = new Tone.Signal(noteToFreq(note)) //Create signal
@@ -77,10 +83,9 @@ function MidiTrack(nodes) {
 
 		//Connect nodes
 		for (var currentNode in this.nodes) {
+			if ( this.nodes.hasOwnProperty(currentNode) ) { //Iterate over node tree
 
-			if ( this.nodes.hasOwnProperty(currentNode) ) {
-
-				var currentTarget = this.nodes[currentNode].target
+				var currentTarget = this.nodes[currentNode].target //currentNode's target
 
 				if ( Array.isArray(currentTarget) ) { //If there are multiple targets
 					for (var i = 0; i < currentTarget.length; i++) { //Iterate over target array
@@ -96,7 +101,7 @@ function MidiTrack(nodes) {
 
 		//Start nodes
 		for (var currentNode in newNote) {
-			if (newNote.hasOwnProperty(currentNode)) {
+			if (newNote.hasOwnProperty(currentNode)) { //Iterate over node tree in newNote
 
 				if (typeof newNote[currentNode].start === 'function') { //If the node has a start function
 					newNote[currentNode].start()
@@ -109,18 +114,24 @@ function MidiTrack(nodes) {
 			}
 		}
 
-		this.voices[note] = newNote
+		this.voices[note] = newNote //Add newNote to voices
 	}
 
 	this.stopNote = function (note, length) {
+		//Find all envelopes and release them
 		for (var currentNode in this.voices[note]) {
-			if (this.voices[note].hasOwnProperty(currentNode)) {
+			if (this.voices[note].hasOwnProperty(currentNode)) { //Iterate over node in note that's ending
+
 				if (typeof this.voices[note][currentNode].triggerRelease === 'function') {
+					//triggerRelease and node that has the function
 					this.voices[note][currentNode].triggerRelease('+' + length)
+
 				}
+
 			}
 		}
 	}
+
 }
 
 var padSynth = new MidiTrack({
@@ -176,8 +187,3 @@ minorScale = [
 ]
 
 padSynth.part.add('0:0', minorScale)
-
-// var padPart = new Tone.Part( (time, value) => {
-// 	padSynth.playNote(value.note, value.velocity)
-// 	padSynth.stopNote(value.note, value.length)
-// }, minorScale).start(0)
