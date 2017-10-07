@@ -63,8 +63,8 @@ Vue.component('panel-frame', {
 			containerStyle: {
 				display: 'flex',
 				flexDirection: this.direction,
-				width: '30em',
-				height: '20em'
+				width: '100vh',
+				height: '100vh'
 			},
 			firstPanelStyle: firstPanelStyle,
 			secondPanelStyle: {
