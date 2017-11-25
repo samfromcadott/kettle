@@ -213,15 +213,23 @@ var padSynth = new MidiTrack({
 })
 
 bassLine = [
-	{time: '0:0:0', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:0:2', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:1:0', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:1:2', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:2:0', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:2:2', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:3:0', length: '8n', note: 33, velocity: 0.8},
-	{time: '0:3:2', length: '8n', note: 33, velocity: 0.8},
-	{time: '1:0', length: '8n', note: 36, velocity: 0.8}
+	{time: '0:0:0', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:0:2', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:1:0', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:1:2', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:2:0', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:2:2', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:3:0', length: '8n', note: 33, velocity: 0.6},
+	{time: '0:3:2', length: '8n', note: 33, velocity: 0.6},
+
+	{time: '1:0:0', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:0:2', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:1:0', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:1:2', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:2:0', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:2:2', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:3:0', length: '8n', note: 36, velocity: 0.7},
+	{time: '1:3:2', length: '8n', note: 36, velocity: 0.7}
 ]
 
 minorScale = [
@@ -231,5 +239,5 @@ minorScale = [
 	{time: '0:3', length: '4n', note: 62, velocity: 0.8}
 ]
 
-padSynth.part.add('0:0', minorScale)
+// padSynth.part.add('0:0', minorScale)
 bassSynth.part.add('0:0', bassLine)
