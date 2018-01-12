@@ -7,7 +7,7 @@ const {remote} = electron
 const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 
-const Vue = require('vue/dist/vue.js')
+import Vue from 'vue/dist/vue.js'
 const Tone = require('Tone')
 const fs = require('fs')
 const path = require('path')
@@ -15,6 +15,9 @@ const path = require('path')
 const main = remote.require('./main')
 const audio = require('./audio-engine')
 const ui = require('./ui')
+
+import songEditor from '../core-plugins/song-editor/song-editor.vue'
+Vue.component('song-editor', songEditor)
 
 var fileArray = [] //This is a list of all files recorded or imported
 var pluginList = [

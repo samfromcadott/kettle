@@ -1,27 +1,28 @@
 {
-	"name": "Kettle",
-	"version": "0.0.1",
-	"description": "An open source digital audio workstation built on web technologies",
-	"main": "main.js",
-	"scripts": {
-		"start": "electron ."
-	},
-	"repository": "https://github.com/samfromcadott/kettle.git",
-	"keywords": [
-		"Kettle",
-		"audio",
-		"music",
-		"production"
-	],
-	"author": "Sam from Cadott",
-	"license": "CC0-1.0",
-	"devDependencies": {
-		"electron": "^1.4.1",
-		"jquery": "^3.2.0",
-		"tone": "^0.9.0",
-		"jquery-ui-dist": "^1.12.1",
-		"less": "^2.7.2",
-		"angular": "^1.6.4",
-		"vue": "^2.4.2"
-	}
+  "name": "Kettle",
+  "version": "0.0.1",
+  "description": "An open source digital audio workstation built on web technologies",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/samfromcadott/kettle.git",
+  "keywords": [
+    "Kettle",
+    "audio",
+    "music",
+    "production"
+  ],
+  "author": "Sam from Cadott",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "angular": "^1.6.4",
+    "electron-prebuilt-compile": "^1.8.2-beta.3",
+    "jquery": "^3.2.0",
+    "jquery-ui-dist": "^1.12.1",
+    "less": "^2.7.2",
+    "tone": "^0.9.0",
+    "vue": "^2.5.13",
+    "vueify": "^9.4.1"
+  }
 }

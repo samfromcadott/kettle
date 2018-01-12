@@ -19,8 +19,8 @@ exports.windowCount = 0
 function createWindow () {
 	// Create the new browser window.
 	windowArray.push( new BrowserWindow({width: 800, height: 600}) )
-	windowCount = windowArray.length
-	newWindow = windowArray[windowCount-1]
+	exports.windowCount = windowArray.length
+	var newWindow = windowArray[exports.windowCount-1]
 
 	// windowArray[windowCount-1].maximize()
 
