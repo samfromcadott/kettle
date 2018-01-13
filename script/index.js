@@ -49,17 +49,17 @@ function getPluginData(pluginName) {
 }
 
 function loadUIPlugin (pluginData, targetDiv) {
-	//Load HTML file
-	$(targetDiv).load(pluginData.htmlFile)
-
-	//Run the plugin script
-	fs.readFile(pluginData.javaScriptFile, 'utf-8', function (err, data) {
-		if (!err) {
-			eval(data)
-		} else {
-			console.log(err)
-		}
-	})
+	// //Load HTML file
+	// $(targetDiv).load(pluginData.htmlFile)
+	//
+	// //Run the plugin script
+	// fs.readFile(pluginData.javaScriptFile, 'utf-8', function (err, data) {
+	// 	if (!err) {
+	// 		eval(data)
+	// 	} else {
+	// 		console.log(err)
+	// 	}
+	// })
 }
 
 function loadProject(filepath) {

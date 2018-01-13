@@ -7,9 +7,13 @@ const {ipcMain} = require('electron')
 const {dialog} = require('electron')
 const {Menu} = require('electron')
 
+import {enableLiveReload} from 'electron-compile'
+
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
+
+enableLiveReload()
 
 //Window Creation
 
