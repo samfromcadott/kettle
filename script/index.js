@@ -16,8 +16,9 @@ const main = remote.require('./main')
 const audio = require('./audio-engine')
 const ui = require('./ui')
 
-import songEditor from '../core-plugins/song-editor/song-editor.vue'
-Vue.component('song-editor', songEditor)
+// import songEditor from '../core-plugins/song-editor/song-editor.vue'
+// Vue.component('song-editor', require('../core-plugins/song-editor/song-editor.vue'))
+loadUIPlugin('song-editor')
 
 var fileArray = [] //This is a list of all files recorded or imported
 var pluginList = [
@@ -32,23 +33,23 @@ function getFileName(filepath) {
 	return filepath[filepath.length - 1] //Return test after last slash
 }
 
-function getPluginData(pluginName) {
-	var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
+function getPluginData(pluginPath) {
+	// var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
 
 	var pluginData = JSON.parse( fs.readFileSync(path.join(pluginPath, 'plugin.json'), 'utf-8') )
 
-	// This is to replace relative paths with absolute
-	if (pluginData.hasOwnProperty('htmlFile')) {
-		pluginData.htmlFile = path.join(pluginPath, pluginData.htmlFile)
-	}
-	if (pluginData.hasOwnProperty('javaScriptFile')) {
-		pluginData.javaScriptFile = path.join(pluginPath, pluginData.javaScriptFile)
-	}
+	// // This is to replace relative paths with absolute
+	// if (pluginData.hasOwnProperty('htmlFile')) {
+	// 	pluginData.htmlFile = path.join(pluginPath, pluginData.htmlFile)
+	// }
+	// if (pluginData.hasOwnProperty('javaScriptFile')) {
+	// 	pluginData.javaScriptFile = path.join(pluginPath, pluginData.javaScriptFile)
+	// }
 
 	return pluginData
 }
 
-function loadUIPlugin (pluginData, targetDiv) {
+function loadUIPlugin (pluginName) {
 	// //Load HTML file
 	// $(targetDiv).load(pluginData.htmlFile)
 	//
@@ -60,6 +61,14 @@ function loadUIPlugin (pluginData, targetDiv) {
 	// 		console.log(err)
 	// 	}
 	// })
+	var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
+
+	var pluginData = getPluginData(pluginPath)
+
+	var vueFile = path.join(pluginPath, pluginData['file'])
+
+	Vue.component(pluginName, require(vueFile))
+
 }
 
 function loadProject(filepath) {
