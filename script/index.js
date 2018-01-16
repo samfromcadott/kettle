@@ -16,8 +16,6 @@ const main = remote.require('./main')
 const audio = require('./audio-engine')
 const ui = require('./ui')
 
-// import songEditor from '../core-plugins/song-editor/song-editor.vue'
-// Vue.component('song-editor', require('../core-plugins/song-editor/song-editor.vue'))
 loadUIPlugin('song-editor')
 
 var fileArray = [] //This is a list of all files recorded or imported
@@ -34,33 +32,13 @@ function getFileName(filepath) {
 }
 
 function getPluginData(pluginPath) {
-	// var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
-
 	var pluginData = JSON.parse( fs.readFileSync(path.join(pluginPath, 'plugin.json'), 'utf-8') )
 
-	// // This is to replace relative paths with absolute
-	// if (pluginData.hasOwnProperty('htmlFile')) {
-	// 	pluginData.htmlFile = path.join(pluginPath, pluginData.htmlFile)
-	// }
-	// if (pluginData.hasOwnProperty('javaScriptFile')) {
-	// 	pluginData.javaScriptFile = path.join(pluginPath, pluginData.javaScriptFile)
-	// }
-
 	return pluginData
+
 }
 
 function loadUIPlugin (pluginName) {
-	// //Load HTML file
-	// $(targetDiv).load(pluginData.htmlFile)
-	//
-	// //Run the plugin script
-	// fs.readFile(pluginData.javaScriptFile, 'utf-8', function (err, data) {
-	// 	if (!err) {
-	// 		eval(data)
-	// 	} else {
-	// 		console.log(err)
-	// 	}
-	// })
 	var pluginPath = path.join(__dirname, '../core-plugins', pluginName)
 
 	var pluginData = getPluginData(pluginPath)
