@@ -11,7 +11,33 @@
 	<div id="message-area"></div>
 
 	<div id="window-body">
-		<song-editor></song-editor>
+		<!-- <split-pane v-on:resize="resize" split="horizontal">
+			<template slot="paneL"><song-editor></song-editor></template>
+
+			<template slot="paneR">
+				B
+			</template>
+		</split-pane> -->
+
+		<multipane layout="vertical">
+			<div>
+				<multipane layout="horizontal">
+					<div>
+						<multipane layout="vertical">
+							<div>Borwser</div>
+							<multipane-resizer></multipane-resizer>
+							<div><song-editor></song-editor></div>
+						</multipane>
+					</div>
+					<multipane-resizer></multipane-resizer>
+					<div>Clip Editor</div>
+				</multipane>
+			</div>
+			<multipane-resizer></multipane-resizer>
+			<div>
+				Effects
+			</div>
+		</multipane>
 	</div>
 
 	<script>

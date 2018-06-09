@@ -16,7 +16,6 @@
   "author": "Sam from Cadott",
   "license": "CC0-1.0",
   "devDependencies": {
-    "angular": "^1.6.4",
     "electron-prebuilt-compile": "^1.8.2-beta.3",
     "jquery": "^3.2.0",
     "jquery-ui-dist": "^1.12.1",
@@ -25,5 +24,9 @@
     "vue": "^2.5.13",
     "vueify": "^9.4.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue-draggable-resizable": "^1.6.1",
+    "vue-multipane": "^0.9.5",
+    "vue-splitpane": "^1.0.2"
+  }
 }

@@ -8,6 +8,8 @@ const {Menu}  = remote.require('electron')
 const {ipcRenderer} = require('electron')
 
 import Vue from 'vue/dist/vue.js'
+import { Multipane, MultipaneResizer } from 'vue-multipane'
+import splitPane from 'vue-splitpane'
 const Tone = require('Tone')
 const fs = require('fs')
 const path = require('path')
@@ -74,6 +76,10 @@ ipcRenderer.on('importer', (event, arg) => {
 })
 
 //Vue App
+
+Vue.component('multipane', Multipane)
+Vue.component('multipane-resizer', MultipaneResizer)
+Vue.component('split-pane', splitPane)
 
 var mainWindow = new Vue({
 	el: '#window-body'

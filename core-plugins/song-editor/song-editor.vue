@@ -9,6 +9,7 @@
 		</div>
 		<div class="song-editor body">
 			<kettle-track name="Track 1" />
+			<kettle-track name="Track 2" :volume="0.5" />
 
 		</div>
 	</div>
@@ -26,9 +27,19 @@ export default {
 </script>
 
 <style scoped>
-.body {
-	overflow: scroll;
+.container {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
+.body {
+	width: 100%;
+	overflow: scroll;
+	position: relative;
+	flex: 1 1 auto;
+}
 
 </style>
